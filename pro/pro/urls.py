@@ -18,8 +18,10 @@ from django.contrib import admin
 from django.urls import path
 from app.views import *
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('register/', register, name='register'),
+    path('register/', RegisterView.as_view(), name='register'),
     path('login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('refresh/', MyTokenRefreshView.as_view(), name='token_refresh'),
+    path('tickets/create/', TicketCreateView.as_view(), name='create_ticket'),
+    path('tickets/', TicketListView.as_view(), name='list_tickets'),
+    path('tickets/assigned/', TicketAssignedListView.as_view(), name='ticket-assigned-list'),
 ]
