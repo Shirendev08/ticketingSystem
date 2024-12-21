@@ -6,7 +6,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .models import Ticket
 from .serializers import UserSerializer, TicketSerializer
 from rest_framework.decorators import api_view
-
+from django.db.models import Count
+from django.db.models.functions import TruncMonth
+from rest_framework.views import APIView
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -67,3 +69,72 @@ class TicketAssignedListView(generics.ListAPIView):
     def get_queryset(self):
         # Get all tickets assigned to the current user
         return Ticket.objects.filter(assigned_to=self.request.user)
+    
+
+
+class TicketStatsView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        # Tickets created by the user
+        tickets_created_by_user = (
+            Ticket.objects.filter(created_by=user)
+            .values("status")
+            .annotate(count=Count("status"))
+        )
+
+        tickets_created_by_user_per_month = (
+            Ticket.objects.filter(created_by=user)
+            .annotate(month=TruncMonth("created_at"))
+            .values("month")
+            .annotate(count=Count("id"))
+            .order_by("month")
+        )
+
+        tickets_created_by_user_by_priority = (
+            Ticket.objects.filter(created_by=user)
+            .values("priority")
+            .annotate(count=Count("priority"))
+        )
+
+        # Tickets assigned to the user
+        tickets_assigned_to_user = (
+            Ticket.objects.filter(assigned_to=user)
+            .values("status")
+            .annotate(count=Count("status"))
+        )
+
+        tickets_assigned_to_user_per_month = (
+            Ticket.objects.filter(assigned_to=user)
+            .annotate(month=TruncMonth("created_at"))
+            .values("month")
+            .annotate(count=Count("id"))
+            .order_by("month")
+        )
+
+        tickets_assigned_to_user_by_priority = (
+            Ticket.objects.filter(assigned_to=user)
+            .values("priority")
+            .annotate(count=Count("priority"))
+        )
+
+        # Overall stats
+        total_created = Ticket.objects.filter(created_by=user).count()
+        total_assigned = Ticket.objects.filter(assigned_to=user).count()
+
+        return Response({
+            "created_by_user": {
+                "tickets_by_status": tickets_created_by_user,
+                "tickets_per_month": tickets_created_by_user_per_month,
+                "tickets_by_priority": tickets_created_by_user_by_priority,
+                "total_tickets": total_created,
+            },
+            "assigned_to_user": {
+                "tickets_by_status": tickets_assigned_to_user,
+                "tickets_per_month": tickets_assigned_to_user_per_month,
+                "tickets_by_priority": tickets_assigned_to_user_by_priority,
+                "total_tickets": total_assigned,
+            }
+        })    
