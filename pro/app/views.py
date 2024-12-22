@@ -138,3 +138,11 @@ class TicketStatsView(APIView):
                 "total_tickets": total_assigned,
             }
         })    
+
+class UserListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]  # Ensure the user is authenticated
+
+    def get(self, request, *args, **kwargs):
+        users = User.objects.all()
+        user_data = [{"id": user.id, "username": user.username} for user in users]
+        return Response(user_data)  

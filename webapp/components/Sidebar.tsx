@@ -37,16 +37,22 @@ export function Sidebar() {
           Home
         </a>
         <a
-          href="/my-tickets"
+          href="/assigned-tickets"
           className="block px-4 py-2 rounded-lg hover:bg-gray-200 text-gray-800 font-medium"
         >
-          My Tickets
+          nadad irsen ticketuud
         </a>
         <a
-          href="/profile"
+          href="/tickets"
           className="block px-4 py-2 rounded-lg hover:bg-gray-200 text-gray-800 font-medium"
         >
-          Profile
+          uusgesen ticketuud
+        </a>
+        <a
+          href="/create-ticket"
+          className="block px-4 py-2 rounded-lg hover:bg-gray-200 text-gray-800 font-medium"
+        >
+          ticket uusgeh
         </a>
        
         <Button onClick={handleLogout} className="mt-1">Logout</Button>

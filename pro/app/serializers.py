@@ -10,7 +10,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email']
 
 class TicketSerializer(serializers.ModelSerializer):
-    assigned_to = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False, allow_null=True)
+    created_by = serializers.StringRelatedField(read_only=True)  # Show username for created_by
+    assigned_to = serializers.StringRelatedField(required=False, allow_null=True)  # Show username for assigned_to
 
     class Meta:
         model = Ticket

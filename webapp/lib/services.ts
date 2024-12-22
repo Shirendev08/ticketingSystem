@@ -78,4 +78,90 @@ export async function logout() {
       throw new Error("Failed to fetch ticket stats");
     }
   }
+
+  
+  export async function fetchCreatedTickets() {
+    const token = Cookies.get("accessToken");
+  
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tickets/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    } else {
+      throw new Error("Failed to fetch created tickets");
+    }
+  }
+  
+  // Fetch tickets assigned to the user
+  export async function fetchAssignedTickets() {
+    const token = Cookies.get("accessToken");
+  
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tickets/assigned/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    } else {
+      throw new Error("Failed to fetch assigned tickets");
+    }
+  } 
+
+
+  export async function fetchUserList() {
+    const token = Cookies.get("accessToken");
+  
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    } else {
+      throw new Error("Failed to fetch user list");
+    }
+  }
+  
+  export async function createTicket(ticketData: {
+    title: string;
+    description: string;
+    status: string;
+    priority: string;
+    assigned_to: number | null;
+  }) {
+    const token = Cookies.get("accessToken");
+  
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tickets/create/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(ticketData),
+    });
+  
+    if (res.ok) {
+      const data = await res.json();
+      return data; // Return the created ticket data
+    } else {
+      throw new Error("Failed to create ticket");
+    }
+  }  
   
