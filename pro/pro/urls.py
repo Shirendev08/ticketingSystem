@@ -26,4 +26,5 @@ urlpatterns = [
     path('tickets/assigned/', TicketAssignedListView.as_view(), name='ticket-assigned-list'),
     path('diagrams/', TicketStatsView.as_view(), name='diagrams' ),
     path('users/', UserListView.as_view(), name='user-list'),
+    path('tickets/assigned/<int:pk>/', TicketAssignedDetailUpdateView.as_view(), name='ticket-assigned-detail-update'),
 ]

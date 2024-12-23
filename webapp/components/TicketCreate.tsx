@@ -4,15 +4,16 @@ import { fetchUserList, createTicket } from "@/lib/services";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-// import {
-//     Select,å
-//     SelectContent,
-//     SelectGroup,
-//     SelectItem,
-//     SelectLabel,
-//     SelectTrigger,
-//     SelectValue,
-//   } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+
 interface User {
   id: number;
   username: string;
@@ -30,7 +31,6 @@ const TicketCreate: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Fetch users for the select input when component mounts
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -44,9 +44,8 @@ const TicketCreate: React.FC = () => {
     fetchUsers();
   }, []);
 
-  // Handle form input changes (for all input types)
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -55,14 +54,20 @@ const TicketCreate: React.FC = () => {
     }));
   };
 
-  // Handle form submission
+  const handleSelectChange = (value: string) => {
+    // For Select component, handle directly as it provides a string value
+    setFormData((prev) => ({
+      ...prev,
+      status: value, // or any other field based on the select
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError(null); // Reset previous error if any
+    setError(null);
 
     try {
-      // Call the createTicket function from service.ts
       await createTicket(formData);
       alert("Ticket created successfully!");
       setFormData({
@@ -81,66 +86,74 @@ const TicketCreate: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Create Ticket</h2>
-      {error && <div className="error">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title</label>
+    <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h2 className="text-2xl font-semibold mb-6 text-center">Create Ticket</h2>
+      {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="flex flex-col">
+          <label htmlFor="title" className="text-lg font-medium mb-2">Title</label>
           <Input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
             required
+            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        <div>
-          <label>Description</label>
+        <div className="flex flex-col">
+          <label htmlFor="description" className="text-lg font-medium mb-2">Description</label>
           <Textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
             required
+            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        <div>
-          <label>Status</label>
-          <select name="status" value={formData.status} onChange={handleChange}>
-            <option value="Open">Open</option>
-            <option value="Closed">Closed</option>
-          </select>
-           {/* <Select name="status" value={formData.status} onValueChange={handleChange}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select a fruit" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Type</SelectLabel>
-          <SelectItem value="Open">Open</SelectItem>
-          <SelectItem value="Closed">Closed</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select> */}
+        <div className="flex flex-col">
+          <label htmlFor="status" className="text-lg font-medium mb-2">Status</label>
+          <Select
+            value={formData.status}
+            onValueChange={handleSelectChange}
+            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Status</SelectLabel>
+                <SelectItem value="Open">Open</SelectItem>
+                <SelectItem value="Closed">Closed</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
 
-        <div>
-          <label>Priority</label>
-          <select name="priority" value={formData.priority} onChange={handleChange}>
+        <div className="flex flex-col">
+          <label htmlFor="priority" className="text-lg font-medium mb-2">Priority</label>
+          <select
+            name="priority"
+            value={formData.priority}
+            onChange={handleChange}
+            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
             <option value="Low">Low</option>
             <option value="Medium">Medium</option>
             <option value="High">High</option>
           </select>
         </div>
 
-        <div>
-          <label>Assigned To</label>
+        <div className="flex flex-col">
+          <label htmlFor="assigned_to" className="text-lg font-medium mb-2">Assigned To</label>
           <select
             name="assigned_to"
             value={formData.assigned_to || ""}
             onChange={handleChange}
+            className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">None</option>
             {users.map((user) => (
@@ -151,7 +164,11 @@ const TicketCreate: React.FC = () => {
           </select>
         </div>
 
-        <Button type="submit" disabled={isSubmitting}>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full p-3 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 transition duration-300"
+        >
           {isSubmitting ? "Creating..." : "Create Ticket"}
         </Button>
       </form>

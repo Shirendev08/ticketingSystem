@@ -8,7 +8,10 @@ from .serializers import UserSerializer, TicketSerializer
 from rest_framework.decorators import api_view
 from django.db.models import Count
 from django.db.models.functions import TruncMonth
+from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.generics import RetrieveUpdateAPIView
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -146,3 +149,32 @@ class UserListView(APIView):
         users = User.objects.all()
         user_data = [{"id": user.id, "username": user.username} for user in users]
         return Response(user_data)  
+    
+class TicketAssignedDetailUpdateView(RetrieveUpdateAPIView):
+    queryset = Ticket.objects.all()
+    serializer_class = TicketSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        ticket_id = self.kwargs.get('pk')  # Get the ticket ID from the URL
+        try:
+            ticket = Ticket.objects.get(id=ticket_id)
+
+            # Ensure the ticket is assigned to the current user
+            if ticket.assigned_to != self.request.user:
+                raise PermissionDenied("You do not have permission to access this ticket.")
+
+            return ticket
+        except Ticket.DoesNotExist:
+            raise PermissionDenied("Ticket not found or not assigned to you.")
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', True)  # Allow partial updates
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    

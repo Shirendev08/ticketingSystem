@@ -131,8 +131,8 @@ const Register: React.FC = () => {
             <p className="text-14 font-normal text-gray-600">
                Already have an account?  
             </p>
-            <Link href='/sign-in' className="form-link">
-              Sign In
+            <Link href='/Login' className="form-link">
+              Login
             </Link>
           </footer>
         </div>

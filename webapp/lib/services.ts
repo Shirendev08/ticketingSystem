@@ -164,4 +164,50 @@ export async function logout() {
       throw new Error("Failed to create ticket");
     }
   }  
+
   
+
+  export async function updateAssignedTicket(ticketId: number, ticketData: {
+    title: string;
+    description: string;
+    status: "Open" | "Closed";
+    priority: "Low" | "Medium" | "High";
+    assigned_to: string | null;
+  }) {
+    const token = Cookies.get("accessToken");
+  
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tickets/assigned/${ticketId}/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(ticketData),
+    });
+  
+    if (res.ok) {
+      const data = await res.json();
+      return data; // Return the updated ticket data
+    } else {
+      throw new Error("Failed to update ticket");
+    }
+  }  
+
+  export async function fetchTicketDetails(ticketId: number) {
+    const token = Cookies.get("accessToken");
+  
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tickets/assigned/${ticketId}/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    if (res.ok) {
+      const data = await res.json();
+      return data; // Return the ticket data
+    } else {
+      throw new Error("Failed to fetch ticket details");
+    }
+  }  

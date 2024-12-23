@@ -1,5 +1,14 @@
+"use client"
 import React from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useRouter } from "next/navigation";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface Ticket {
   id: number;
@@ -18,6 +27,15 @@ interface TicketTableProps {
 }
 
 const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
+  const router = useRouter();
+  
+
+  const handleViewClick = (ticketId: number) => {
+    
+      router.push(`/assigned-tickets/${ticketId}`); // Navigate to the ticket detail page
+   
+  };
+
   return (
     <div className="overflow-x-auto">
       <Table>
@@ -31,6 +49,7 @@ const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
             <TableHead>Updated At</TableHead>
             <TableHead>Created By</TableHead>
             <TableHead>Assigned To</TableHead>
+            <TableHead>Detail</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -44,6 +63,14 @@ const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
               <TableCell>{new Date(ticket.updated_at).toLocaleString()}</TableCell>
               <TableCell>{ticket.created_by}</TableCell>
               <TableCell>{ticket.assigned_to || "Unassigned"}</TableCell>
+              <TableCell>
+                <button
+                  onClick={() => handleViewClick(ticket.id)}
+                  className="text-blue-500 hover:underline"
+                >
+                  View
+                </button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

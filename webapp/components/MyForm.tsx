@@ -107,8 +107,8 @@ const MyForm: React.FC = () => {
             <p className="text-14 font-normal text-gray-600">
                Don&apos;t have an account?  
             </p>
-            <Link href='/sign-up' className="form-link">
-              Sign Up
+            <Link href='/register' className="form-link">
+              Register
             </Link>
           </footer>
         </div>

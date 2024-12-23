@@ -17,3 +17,135 @@ body {
     --radius: 0.5rem;
   }
 }
+
+
+.ticket-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f6f9;
+  padding: 16px;
+}
+
+.ticket-card {
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.ticket-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.ticket-status {
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.ticket-status.open {
+  background-color: #28a745;
+  color: white;
+}
+
+.ticket-status.closed {
+  background-color: #dc3545;
+  color: white;
+}
+
+.ticket-details p {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.ticket-details strong {
+  font-weight: bold;
+}
+
+.back-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.back-button button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.back-button button:hover {
+  background-color: #0056b3;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+}
+
+.not-found {
+  text-align: center;
+  font-size: 18px;
+  color: red;
+}
+
+
+.ticket-details input {
+  margin-top: 8px;
+  padding: 8px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.ticket-actions button {
+  margin-top: 16px;
+}
+
+.success {
+  margin-top: 16px;
+  color: green;
+  font-weight: bold;
+}
+
+
+
+.ticket-details select {
+  margin-top: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.ticket-actions button {
+  margin-top: 16px;
+}
+
+.success {
+  margin-top: 16px;
+  color: green;
+  font-weight: bold;
+}
+
