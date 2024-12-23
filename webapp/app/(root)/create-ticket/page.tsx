@@ -1,11 +1,17 @@
-import React from 'react'
-import TicketCreate from '@/components/TicketCreate'
-const page = () => {
-  return (
-    <div>
-        <TicketCreate/>
-    </div>
-  )
-}
+"use client"
+import React, { useEffect, useState } from "react";
+import TicketTable from "@/components/TicketTable";
+import { fetchCreatedTickets } from "@/lib/services";
+import TicketSearchPage from "@/components/TicketSearchPage";
+import TicketCreate from "@/components/TicketCreate";
+const Page: React.FC = () => {
+  
 
-export default page
+  return (
+    <div className="p-6">
+       <TicketCreate/>
+    </div>
+  );
+};
+
+export default Page;

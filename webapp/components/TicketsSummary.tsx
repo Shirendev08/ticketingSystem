@@ -14,9 +14,10 @@ interface TicketsSummaryProps {
   total: number;
   solved: number;
   inProgress: number;
+  title?: string; // Optional title prop
 }
 
-export const TicketsSummary = ({ total, solved, inProgress }: TicketsSummaryProps) => {
+export const TicketsSummary = ({ total, solved, inProgress, title = "Ticket Summary" }: TicketsSummaryProps) => {
   // Calculate unsolved tickets
   const unsolved = total - solved - inProgress;
 
@@ -28,7 +29,6 @@ export const TicketsSummary = ({ total, solved, inProgress }: TicketsSummaryProp
         label: 'Tickets Status',
         data: [solved, unsolved, inProgress],
         backgroundColor: ['#34D399', '#F87171', '#FBBF24'], // Green for solved, Red for unsolved, Yellow for in progress
-        hoverBackgroundColor: ['#2D6A4F', '#9B2C2C', '#F59E0B'],
       },
     ],
   };
@@ -36,7 +36,7 @@ export const TicketsSummary = ({ total, solved, inProgress }: TicketsSummaryProp
   return (
     <div className="mb-4">
       <div className="p-4 border rounded-lg">
-        <h2 className="text-lg font-semibold">Ticket Summary</h2>
+        <h2 className="text-lg font-semibold">{title}</h2>
         <div className="mb-4">
           <p>Total Tickets: {total}</p>
           <p>Solved Tickets: {solved}</p>

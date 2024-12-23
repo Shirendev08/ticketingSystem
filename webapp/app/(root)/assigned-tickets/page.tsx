@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import TicketTable from "@/components/TicketTable";
 import { fetchAssignedTickets } from "@/lib/services";
+import TicketSearchPage from "@/components/TicketSearchPage";
 const Page: React.FC = () => {
   const [tickets, setTickets] = useState([]);
 
@@ -18,10 +19,11 @@ const Page: React.FC = () => {
 
     loadTickets();
   }, []);
-
+  
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">My Tickets</h1>
+      <TicketSearchPage/>
+      <h1 className="text-2xl font-bold mb-4 mt-30">Tickets Assigned to Me</h1>
       {/* Pass the tickets to the TicketTable component */}
       <TicketTable tickets={tickets} />
     </div>

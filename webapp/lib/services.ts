@@ -170,7 +170,7 @@ export async function logout() {
   export async function updateAssignedTicket(ticketId: number, ticketData: {
     title: string;
     description: string;
-    status: "Open" | "Closed";
+    status: "Open" | "Closed" | "In Progress";
     priority: "Low" | "Medium" | "High";
     assigned_to: string | null;
   }) {
@@ -211,3 +211,30 @@ export async function logout() {
       throw new Error("Failed to fetch ticket details");
     }
   }  
+
+  export async function searchTickets(queryParams: {
+    assigned_to?: string;
+    created_by?: string;
+    title?: string;
+  }) {
+    const token = Cookies.get("accessToken");
+    
+    // Build query string from queryParams object
+    const queryString = new URLSearchParams(queryParams).toString();
+  
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/search/?${queryString}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    if (res.ok) {
+      const data = await res.json();
+      return data; // Return the list of tickets
+    } else {
+      throw new Error("Failed to search tickets");
+    }
+  }
+  

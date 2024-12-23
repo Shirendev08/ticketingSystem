@@ -11,7 +11,7 @@ from django.db.models.functions import TruncMonth
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView,ListAPIView
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -178,3 +178,33 @@ class TicketAssignedDetailUpdateView(RetrieveUpdateAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     
+
+class TicketSearchView(generics.ListAPIView):
+    serializer_class = TicketSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        # Get the current authenticated user
+        user = self.request.user
+
+        queryset = Ticket.objects.all()
+
+        # Get query parameters for search
+        assigned_to = self.request.query_params.get('assigned_to', None)
+        created_by = self.request.query_params.get('created_by', None)
+        title = self.request.query_params.get('title', None)
+
+        # Filter based on assigned_to, created_by, and title
+        if assigned_to:
+            queryset = queryset.filter(assigned_to__username__icontains=assigned_to)
+        if created_by:
+            queryset = queryset.filter(created_by__username__icontains=created_by)
+        if title:
+            queryset = queryset.filter(title__icontains=title)
+
+        # Further filter to ensure that users can only search their own tickets
+        queryset = queryset.filter(
+            assigned_to=user
+        ) | queryset.filter(created_by=user)
+
+        return queryset

@@ -1,9 +1,8 @@
 import React from "react";
 import type { Metadata } from "next";
-import { Sidebar } from "@/components/Sidebar";
-import "../globals.css"
-
-
+import { AppSidebar } from "@/components/app-sidebar";
+import "../globals.css";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,18 +16,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className='antialiased'
-      >
-        <div className="flex h-screen">
-          {/* Sidebar */}
-          <Sidebar />
-          
-          {/* Main Content */}
-          <main className="flex-1 bg-gray-50 overflow-auto">
+      <body className="antialiased">
+          <SidebarProvider>
+            <AppSidebar />
+        <main className="">
+            <SidebarTrigger />
             {children}
-          </main>
-        </div>
+        </main>
+          </SidebarProvider>
       </body>
     </html>
   );

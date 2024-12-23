@@ -14,9 +14,15 @@ class Profile(models.Model):
 
 
 class Ticket(models.Model):
+    STATUS_CHOICES = [
+        ('Open', 'Open'),
+        ('Closed', 'Closed'),
+        ('In Progress', 'In Progress'),  # Added "In Progress"
+    ]
+    
     title = models.CharField(max_length=255)
     description = models.TextField()
-    status = models.CharField(max_length=10, choices=[('Open', 'Open'), ('Closed', 'Closed')], default='Open')
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='Open')  # Updated max_length
     priority = models.CharField(max_length=10, choices=[('Low', 'Low'), ('Medium', 'Medium'), ('High', 'High')], default='Low')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -25,3 +31,4 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.title
+

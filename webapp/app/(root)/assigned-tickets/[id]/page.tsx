@@ -29,6 +29,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         setTicket(ticketData);
       } catch (err) {
         setError("Failed to fetch ticket details");
+        console.log(err)
       } finally {
         setLoading(false);
       }
@@ -51,6 +52,7 @@ const Page = ({ params }: { params: { id: string } }) => {
       setError(null);
     } catch (err) {
       setError("Failed to update ticket");
+      console.log(err)
     }
   };
 
@@ -79,6 +81,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 onChange={(e) => setTicket({ ...ticket, status: e.target.value as "Open" | "Closed" })}
               >
                 <option value="Open">Open</option>
+                <option value="In Progress">In progress</option>
                 <option value="Closed">Closed</option>
               </select>
             </p>

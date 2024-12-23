@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { fetchTicketStats } from "@/lib/services";
 import { TicketsSummary } from "@/components/TicketsSummary";
-import { TicketsChart } from "@/components/TicketsChart";
+import { Component } from "@/components/AssignedTicketsChart";
 import { TicketStats } from "@/lib/types";
 
 const Home = () => {
@@ -37,39 +37,44 @@ const Home = () => {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      
-      <h1 className="text-2xl font-bold mb-4">My Tickets</h1>
-
-      {/* Summary of tickets created by the user */}
-      <TicketsSummary
-  total={created_by_user.total_tickets}
-  solved={created_by_user.tickets_by_status.find(
-    (stat) => stat.status === "Closed"
-  )?.count || 0}
+    <h1 className="text-2xl font-bold mb-4">User Dashboard</h1>
   
-  inProgress={created_by_user.tickets_by_status.find(
-    (stat) => stat.status === "In Progress"
-  )?.count || 0}
-/>
+    {/* Summary of tickets created by the user and assigned to the user */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <TicketsSummary
+        total={created_by_user.total_tickets}
+        solved={
+          created_by_user.tickets_by_status.find(
+            (stat) => stat.status === "Closed"
+          )?.count || 0
+        }
+        inProgress={
+          created_by_user.tickets_by_status.find(
+            (stat) => stat.status === "In Progress"
+          )?.count || 0
+        }
+        title="Created Tickets"
+      />
+      <TicketsSummary
+        total={assigned_to_user.total_tickets}
+        solved={
+          assigned_to_user.tickets_by_status.find(
+            (stat) => stat.status === "Closed"
+          )?.count || 0
+        }
+        inProgress={
+          assigned_to_user.tickets_by_status.find(
+            (stat) => stat.status === "In Progress"
+          )?.count || 0
+        }
+        title="Assigned Tickets"
+      />
 
-{/* Chart for tickets created by the user */}
-<TicketsChart tickets={created_by_user.tickets_per_month} />
-
-{/* Summary of tickets assigned to the user */}
-<TicketsSummary
-  total={assigned_to_user.total_tickets}
-  solved={assigned_to_user.tickets_by_status.find(
-    (stat) => stat.status === "Closed"
-  )?.count || 0}
-  inProgress={assigned_to_user.tickets_by_status.find(
-    (stat) => stat.status === "In Progress"
-  )?.count || 0}
-/>
-
-      {/* Chart for tickets assigned to the user */}
-      <TicketsChart tickets={assigned_to_user.tickets_per_month} />
-      
+      <Component/>
     </div>
+  </div>
+  
+  
 
     
   );
