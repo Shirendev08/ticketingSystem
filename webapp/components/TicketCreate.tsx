@@ -37,7 +37,8 @@ const TicketCreate: React.FC = () => {
         const usersList = await fetchUserList();
         setUsers(usersList);
       } catch (error) {
-        setError(`${error}`);
+        setError("error");
+        
       }
     };
 
@@ -85,7 +86,7 @@ const TicketCreate: React.FC = () => {
   };
 
   return (
-    <div className="max-w-xl w-full p-6 bg-white rounded-lg shadow-lg">
+    <div className="max-w-xl w-full p-6 bg-white rounded-lg shadow-lg w-[800px] ml-[400px] mt-[120px]">
       <h2 className="text-3xl font-semibold mb-6 text-center">Create Ticket</h2>
       {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
       <form onSubmit={handleSubmit} className="">
