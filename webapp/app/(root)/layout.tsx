@@ -2,7 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 import { AppSidebar } from "@/components/app-sidebar";
 import "../globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import Sidebar from "@/components/Sidebar";
+import MobileNav from "@/components/MobileNav";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,13 +18,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-          <SidebarProvider>
-            <AppSidebar />
-        <main className="">
-            <SidebarTrigger />
-            {children}
-        </main>
-          </SidebarProvider>
+      <main className="flex h-header w-full font-inter bg-slate-100">
+        <Sidebar/>
+        <div className="flex size-full flex-col">
+            <div className="flex h-16 items-center justify-between p-5 shadow-creditCard sm:p-8 md:hidden">
+                <MobileNav/>
+            </div>
+        {children}
+        </div>
+    </main>
+       
       </body>
     </html>
   );
