@@ -20,10 +20,10 @@ const Page: React.FC = () => {
     loadTickets();
   }, []);
   
-  return (
+  return (  
     <div className="p-6">
       <TicketSearchPage/>
-      <h1 className="text-2xl font-bold mb-4 mt-30">Tickets Assigned to Me</h1>
+      <h1 className="text-2xl font-bold mb-4 mt-30">Надад ирсэн хүсэлтүүд</h1>
       {/* Pass the tickets to the TicketTable component */}
       <TicketTable tickets={tickets} />
     </div>

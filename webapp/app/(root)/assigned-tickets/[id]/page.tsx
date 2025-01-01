@@ -15,6 +15,32 @@ type Ticket = {
   assigned_to: string | null; // Username of the assigned user, null if unassigned
 };
 
+const translateStatus = (status: Ticket["status"]) => {
+  switch (status) {
+    case "Open":
+      return "Нээлттэй";
+    case "Closed":
+      return "Хаагдсан";
+    case "In Progress":
+      return "Явцтай";
+    default:
+      return status;
+  }
+};
+
+const translatePriority = (priority: Ticket["priority"]) => {
+  switch (priority) {
+    case "Low":
+      return "Бага";
+    case "Medium":
+      return "Дунд";
+    case "High":
+      return "Өндөр";
+    default:
+      return priority;
+  }
+};
+
 const Page = ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const [ticket, setTicket] = useState<Ticket | null>(null);
@@ -28,7 +54,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         const ticketData = await fetchTicketDetails(Number(id));
         setTicket(ticketData);
       } catch (err) {
-        setError("Failed to fetch ticket details");
+        setError("Мэдээллийг татаж чадсангүй");
       } finally {
         setLoading(false);
       }
@@ -50,15 +76,15 @@ const Page = ({ params }: { params: { id: string } }) => {
       setUpdatedTicket(updated);
       setError(null);
     } catch (err) {
-      setError("Failed to update ticket");
+      setError("Тасалбарыг шинэчлэхэд алдаа гарлаа");
       console.error(err);
     }
   };
 
   if (loading)
-    return <div className="loading text-center text-xl text-gray-500">Loading...</div>;
+    return <div className="loading text-center text-xl text-gray-500"><strong>Ачааллаж байна...</strong></div>;
   if (error)
-    return <div className="error text-center text-xl text-red-500">{error}</div>;
+    return <div className="error text-center text-xl text-red-500"><strong>{error}</strong></div>;
 
   return (
     <div className="ticket-container flex justify-center min-h-screen bg-gradient-to-r from-blue-50 to-gray-50">
@@ -67,7 +93,9 @@ const Page = ({ params }: { params: { id: string } }) => {
           <div className="ticket-card space-y-6">
             {/* Header */}
             <div className="ticket-header flex justify-between items-center border-b pb-4">
-              <h1 className="ticket-title text-3xl font-bold text-gray-900">{ticket.title}</h1>
+              <h1 className="ticket-title text-3xl font-bold text-gray-900">
+                <strong>{ticket.title}</strong>
+              </h1>
               <span
                 className={`ticket-status px-4 py-2 rounded-full text-white ${
                   ticket.status === "Open"
@@ -77,17 +105,17 @@ const Page = ({ params }: { params: { id: string } }) => {
                     : "bg-yellow-500"
                 }`}
               >
-                {ticket.status}
+                <strong>{translateStatus(ticket.status)}</strong>
               </span>
             </div>
 
             {/* Details */}
             <div className="ticket-details space-y-4">
               <p className="text-lg">
-                <strong>Description:</strong> {ticket.description}
+                <strong>Тайлбар:</strong> <strong>{ticket.description}</strong>
               </p>
               <p className="text-lg">
-                <strong>Priority:</strong>{" "}
+                <strong>Чухал байдал:</strong>{" "}
                 <span
                   className={`badge px-3 py-1 rounded ${
                     ticket.priority === "Low"
@@ -97,30 +125,30 @@ const Page = ({ params }: { params: { id: string } }) => {
                       : "bg-red-200 text-red-800"
                   }`}
                 >
-                  {ticket.priority}
+                  <strong>{translatePriority(ticket.priority)}</strong>
                 </span>
               </p>
               <p className="text-lg">
-                <strong>Created At:</strong> {new Date(ticket.created_at).toLocaleString()}
+                <strong>Үүсгэсэн огноо:</strong> <strong>{new Date(ticket.created_at).toLocaleString()}</strong>
               </p>
               <p className="text-lg flex items-center">
-                <strong className="mr-2">Assigned To:</strong>{" "}
+                <strong className="mr-2">Хариуцагч:</strong>{" "}
                 {ticket.assigned_to ? (
                   <span className="px-3 py-1 bg-blue-200 text-blue-800 rounded">
-                    {ticket.assigned_to}
+                    <strong>{ticket.assigned_to}</strong>
                   </span>
                 ) : (
-                  <span className="italic text-gray-500">Not assigned</span>
+                  <span className="italic text-gray-500"><strong>Хариуцагч байхгүй</strong></span>
                 )}
               </p>
               <p className="text-lg flex items-center">
-                <strong className="mr-2">Created By:</strong>{" "}
+                <strong className="mr-2">Үүсгэсэн:</strong>{" "}
                 <span className="px-3 py-1 bg-gray-200 text-gray-800 rounded">
-                  {ticket.created_by}
+                  <strong>{ticket.created_by}</strong>
                 </span>
               </p>
               <p className="text-lg">
-                <strong>Status:</strong>
+                <strong>Статус:</strong>
                 <select
                   value={ticket.status}
                   onChange={(e) =>
@@ -128,9 +156,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                   }
                   className="ml-2 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                 >
-                  <option value="Open">Open</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Closed">Closed</option>
+                  <option value="Open">Нээлттэй</option>
+                  <option value="In Progress">Явцтай</option>
+                  <option value="Closed">Хаагдсан</option>
                 </select>
               </p>
             </div>
@@ -141,26 +169,26 @@ const Page = ({ params }: { params: { id: string } }) => {
                 onClick={handleUpdate}
                 className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md"
               >
-                Update Status
+                <strong>Шинэчлэх</strong>
               </Button>
               <Button
                 onClick={() => window.history.back()}
                 className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md"
               >
-                Back
+                <strong>Буцах</strong>
               </Button>
             </div>
 
             {/* Success Message */}
             {updatedTicket && (
               <div className="success text-green-500 text-center mt-4">
-                Ticket updated successfully
+                <strong>Тасалбар амжилттай шинэчлэгдлээ</strong>
               </div>
             )}
           </div>
         ) : (
           <div className="not-found text-center text-xl text-gray-500">
-            Ticket not found
+            <strong>Тасалбар олдсонгүй</strong>
           </div>
         )}
       </div>

@@ -91,7 +91,7 @@ const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
 
   return (
     <div className="overflow-x-auto">
-      <Table>
+      <Table className="bg-white border-lg p-4">
         <TableHeader>
           <TableRow>
             <TableHead>Дугаар</TableHead> {/* Number */}

@@ -37,7 +37,7 @@ const Home = () => {
 
   return (
     <div className="container mx-auto px-4 py-6">
-    <h1 className="text-2xl font-bold mb-4">User Dashboard</h1>
+    <h1 className="text-2xl font-bold mb-4">Хяналтын самбар</h1>
   
     {/* Summary of tickets created by the user and assigned to the user */}
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -53,7 +53,7 @@ const Home = () => {
             (stat) => stat.status === "In Progress"
           )?.count || 0
         }
-        title="Created Tickets"
+        title="Миний үүсэгсэн хүсэлтүүд "
       />
       <TicketsSummary
         total={assigned_to_user.total_tickets}
@@ -67,7 +67,7 @@ const Home = () => {
             (stat) => stat.status === "In Progress"
           )?.count || 0
         }
-        title="Assigned Tickets"
+        title="Надад хуваарьлагдсан хүсэлтүүд"
       />
 
       <Component/>

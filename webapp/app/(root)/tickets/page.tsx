@@ -23,7 +23,7 @@ const Page: React.FC = () => {
   return (
     <div className="p-6">
        <TicketSearchPage/>
-      <h1 className="text-2xl font-bold mb-4">My Tickets</h1>
+      <h1 className="text-2xl font-bold mb-4">Миний хүсэлтүүд</h1>
       {/* Pass the tickets to the TicketTable component */}
       <TicketTable tickets={tickets} />
     </div>

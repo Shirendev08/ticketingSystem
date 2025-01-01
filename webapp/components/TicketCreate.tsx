@@ -24,8 +24,8 @@ const TicketCreate: React.FC = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    status: "Open",
-    priority: "Low",
+    status: "Нээлттэй",
+    priority: "Бага",
     assigned_to: null as number | null,
   });
   const [error, setError] = useState<string | null>(null);
@@ -37,8 +37,7 @@ const TicketCreate: React.FC = () => {
         const usersList = await fetchUserList();
         setUsers(usersList);
       } catch (error) {
-        setError("error");
-        
+        setError("Хэрэглэгчдийн жагсаалтыг татахад алдаа гарлаа.");
       }
     };
 
@@ -69,16 +68,16 @@ const TicketCreate: React.FC = () => {
 
     try {
       await createTicket(formData);
-      alert("Ticket created successfully!");
+      alert("Санал хүсэлт амжилттай үүсгэгдлээ!");
       setFormData({
         title: "",
         description: "",
-        status: "Open",
-        priority: "Low",
+        status: "Нээлттэй",
+        priority: "Бага",
         assigned_to: null,
       });
     } catch (error) {
-      setError("Error creating ticket.");
+      setError("Санал хүсэлт үүсгэхэд алдаа гарлаа.");
       console.error(error);
     } finally {
       setIsSubmitting(false);
@@ -87,11 +86,11 @@ const TicketCreate: React.FC = () => {
 
   return (
     <div className="max-w-xl w-full p-6 bg-white rounded-lg shadow-lg w-[800px] ml-[400px] mt-[120px]">
-      <h2 className="text-3xl font-semibold mb-6 text-center">Create Ticket</h2>
+      <h2 className="text-3xl font-semibold mb-6 text-center">Санал хүсэлт үүсгэх</h2>
       {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
       <form onSubmit={handleSubmit} className="">
         <div className="flex flex-col">
-          <label htmlFor="title" className="text-lg font-medium mb-2">Title</label>
+          <label htmlFor="title" className="text-lg font-medium mb-2">Гарчиг</label>
           <Input
             type="text"
             name="title"
@@ -103,7 +102,7 @@ const TicketCreate: React.FC = () => {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="description" className="text-lg font-medium mb-2">Description</label>
+          <label htmlFor="description" className="text-lg font-medium mb-2">Тайлбар</label>
           <Textarea
             name="description"
             value={formData.description}
@@ -114,48 +113,47 @@ const TicketCreate: React.FC = () => {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="status" className="text-lg font-medium mb-2">Status</label>
+          <label htmlFor="status" className="text-lg font-medium mb-2">Төлөв</label>
           <Select
             value={formData.status}
             onValueChange={handleSelectChange}
-            
           >
-            <SelectTrigger className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <SelectValue placeholder="Select Status" />
+            <SelectTrigger disabled className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <SelectValue placeholder="Төлөв сонгох" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Status</SelectLabel>
-                <SelectItem value="Open">Open</SelectItem>
-                <SelectItem value="Closed">Closed</SelectItem>
+                {/* <SelectLabel>Төлөв</SelectLabel> */}
+                <SelectItem value="Нээлттэй">Нээлттэй</SelectItem>
+                {/* <SelectItem value="Хаагдсан">Хаагдсан</SelectItem> */}
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="priority" className="text-lg font-medium mb-2">Priority</label>
+          <label htmlFor="priority" className="text-lg font-medium mb-2">Чухал байдал</label>
           <select
             name="priority"
             value={formData.priority}
             onChange={handleChange}
             className="p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
+            <option value="Бага">Бага</option>
+            <option value="Дундаж">Дундаж</option>
+            <option value="Өндөр">Өндөр</option>
           </select>
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="assigned_to" className="text-lg font-medium mb-2">Assigned To</label>
+          <label htmlFor="assigned_to" className="text-lg font-medium mb-2">Хариуцагч</label>
           <select
             name="assigned_to"
             value={formData.assigned_to || ""}
             onChange={handleChange}
             className="p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">None</option>
+            <option value="">Сонгоогүй</option>
             {users.map((user) => (
               <option key={user.id} value={user.id}>
                 {user.username}
@@ -169,7 +167,7 @@ const TicketCreate: React.FC = () => {
           disabled={isSubmitting}
           className="w-full p-4 text-white rounded-md shadow-md transition duration-300"
         >
-          {isSubmitting ? "Creating..." : "Create Ticket"}
+          {isSubmitting ? "Үүсгэж байна..." : "Үүсгэх"}
         </Button>
       </form>
     </div>

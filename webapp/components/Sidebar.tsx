@@ -25,7 +25,7 @@ const Sidebar = () => {
                 const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`)
                 return (
                     <Link href={item.route} key={item.label} className={cn('sidebar-link',{
-                        'bg-slate-950': isActive
+                        'bg-slate-400': isActive
                     })}>
                         <div className="relative size-6">
                         </div>
@@ -35,7 +35,7 @@ const Sidebar = () => {
                     </Link>
                 )
             })}
-            <Button onClick={handleLogout} className='bg-slate-950'>Logout</Button>
+            <Button onClick={handleLogout} className='bg-slate-600'>Logout</Button>
         </nav>
     </section>
   )

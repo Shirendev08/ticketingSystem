@@ -8,17 +8,17 @@ export const sidebarLinks = [
   {
     img: "/aboutus.png",
     route: "/assigned-tickets",
-    label: "ДАГ-ын талаар",
+    label: "Надад ирсэн хүсэлтүүд",
   },
   {
     img: "/faq1.png",
     route: "/tickets",
-    label: "Түгээмэл асуулт хариултууд",
+    label: "Миний үүсгэсэн хүсэлтүүд",
   },
   {
     img: "/sec.png",
     route: "/create-ticket",
-    label: "Зайны хяналт",
+    label: "Хүсэлт үүсгэх",
   },
 
   ];

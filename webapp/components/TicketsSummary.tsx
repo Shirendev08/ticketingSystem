@@ -26,7 +26,7 @@ export const TicketsSummary = ({ total, solved, inProgress, title = "Ticket Summ
     labels: ['Solved', 'Unsolved', 'In Progress'],
     datasets: [
       {
-        label: 'Tickets Status',
+        label: 'Хүсэлтийн Төлөв',
         data: [solved, unsolved, inProgress],
         backgroundColor: ['#34D399', '#F87171', '#FBBF24'], // Green for solved, Red for unsolved, Yellow for in progress
       },
@@ -38,9 +38,9 @@ export const TicketsSummary = ({ total, solved, inProgress, title = "Ticket Summ
       <div className="p-4 border rounded-lg">
         <h2 className="text-lg font-semibold">{title}</h2>
         <div className="mb-4">
-          <p>Total Tickets: {total}</p>
-          <p>Solved Tickets: {solved}</p>
-          <p>In Progress Tickets: {inProgress}</p>
+          <p>Нийт Хүсэлтүүд: {total}</p>
+          <p>Шийдвэрлэгдсэн Хүсэлт: {solved}</p>
+          <p>Хүлээгдэж байгаа хүсэлт: {inProgress}</p>
         </div>
         <div className="w-full h-64">
           <Pie data={data} />
