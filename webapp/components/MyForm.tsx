@@ -3,7 +3,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { date, z } from "zod";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -23,9 +23,7 @@ const formSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  password: z.string().min(1, {
-    message: "Password must be at least 6 characters.",
-  }),
+  date: z.date()
 });
 
 const MyForm: React.FC = () => {
@@ -34,14 +32,14 @@ const MyForm: React.FC = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
-      password: "",
+      date: new Date(),
     },
   });
 
-  const handleSubmit = async (data: { username: string; password: string }) => {
+  const handleSubmit = async (data: { username: string; date: Date }) => {
     try {
       // Use the login function from auth.ts
-      await login(data.username, data.password);
+      await login(data.username, data.date);
       // Redirect to the home page on successful login
       router.push("/");
     } catch (error) {
@@ -81,13 +79,13 @@ const MyForm: React.FC = () => {
               
               <FormField
                 control={form.control}
-                name="password"
+                name="date"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        type="password"
+                        type="date"
                         placeholder="Enter your password"
                         {...field}
                         className="text-16 placeholder:text-16 rounded-lg border border-gray-300 placeholder:text-gray-500"
